@@ -1,6 +1,7 @@
 // swift-tools-version:5.9
 
 import PackageDescription
+import Foundation
 
 let package = Package(
     name: "CLMDB",
@@ -15,9 +16,9 @@ let package = Package(
         .target(
             name: "CLMDB",
             dependencies: [],
-            cSettings: [
-                .define("MDB_USE_POSIX_SEM", to: "1")
-            ]
-        ),
+            cSettings: ProcessInfo.processInfo.environment["APPGROUP_ID"].map {
+                [.define("MDB_POSIX_SEM_PREFIX", to: $0)]
+            } ?? []
+        )
     ]
 )

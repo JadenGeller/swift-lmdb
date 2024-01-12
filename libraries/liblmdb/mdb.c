@@ -497,7 +497,11 @@ typedef pthread_mutex_t *mdb_mutexref_t;
 #ifdef _WIN32
 #define MUTEXNAME_PREFIX		"Global\\MDB"
 #elif defined MDB_USE_POSIX_SEM
-#define MUTEXNAME_PREFIX		"/MDB"
+#ifdef MDB_POSIX_SEM_PREFIX
+#define MUTEXNAME_PREFIX MDB_POSIX_SEM_PREFIX "/MDB"
+#else
+#define MUTEXNAME_PREFIX "/MDB"
+#endif
 #endif
 
 /** @} */
