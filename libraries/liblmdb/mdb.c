@@ -5400,6 +5400,8 @@ mdb_env_setup_locks(MDB_env *env, MDB_name *fname, int mode, int *excl)
         fprintf(stderr, "BLAH_BLAH1\n");
 
 #ifdef _WIN32
+        fprintf(stderr, "HUH1\n");
+
 		BY_HANDLE_FILE_INFORMATION stbuf;
 		struct {
 			DWORD volume;
@@ -5467,6 +5469,8 @@ mdb_env_setup_locks(MDB_env *env, MDB_name *fname, int mode, int *excl)
 		env->me_wmutex = sem_open(MUTEXNAME(env, 'w'), O_CREAT|O_EXCL, mode, 1);
 		if (env->me_wmutex == SEM_FAILED) goto fail_errno;
 #elif defined(MDB_USE_SYSV_SEM)
+        fprintf(stderr, "HUH2\n");
+
 		unsigned short vals[2] = {1, 1};
 		key_t key = ftok(fname->mn_val, 'M'); /* fname is lockfile path now */
 		if (key == -1)
@@ -5481,6 +5485,7 @@ mdb_env_setup_locks(MDB_env *env, MDB_name *fname, int mode, int *excl)
 		env->me_txns->mti_rlocked = 0;
 		env->me_txns->mti_wlocked = 0;
 #else	/* MDB_USE_POSIX_MUTEX: */
+        fprintf(stderr, "HUH3\n");
 		pthread_mutexattr_t mattr;
 
 		/* Solaris needs this before initing a robust mutex.  Otherwise
