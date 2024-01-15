@@ -5463,6 +5463,7 @@ mdb_env_setup_locks(MDB_env *env, MDB_name *fname, int mode, int *excl)
 		 */
 		sem_unlink(MUTEXNAME(env, 'r'));
 		sem_unlink(MUTEXNAME(env, 'w'));
+        fprintf(stderr, "PREFIX: '%s'\n", MDB_POSIX_SEM_PREFIX);
         fprintf(stderr, "MUTEXNAME: '%s'\n", MUTEXNAME(env, 'r'));
 		env->me_rmutex = sem_open(MUTEXNAME(env, 'r'), O_CREAT|O_EXCL, mode, 1);
 		if (env->me_rmutex == SEM_FAILED) goto fail_errno;
