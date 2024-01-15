@@ -24,7 +24,7 @@ let package = Package(
             dependencies: [],
             cSettings: [
                 .define("MDB_USE_POSIX_SEM")
-            ] + foo()
+            ] //+ foo()
         )
     ]
 )
