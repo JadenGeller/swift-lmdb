@@ -5322,6 +5322,8 @@ mdb_env_setup_locks(MDB_env *env, MDB_name *fname, int mode, int *excl)
 	MDB_OFF_T size, rsize;
 
 	rc = mdb_fopen(env, fname, MDB_O_LOCKS, mode, &env->me_lfd);
+    fprintf(stderr, "IDK_THIS_0\n");
+
 	if (rc) {
 		/* Omit lockfile if read-only env on read-only filesystem */
 		if (rc == MDB_ERRCODE_ROFS && (env->me_flags & MDB_RDONLY)) {
@@ -5329,11 +5331,15 @@ mdb_env_setup_locks(MDB_env *env, MDB_name *fname, int mode, int *excl)
 		}
 		goto fail;
 	}
+    fprintf(stderr, "IDK_THIS_A\n");
 
 	if (!(env->me_flags & MDB_NOTLS)) {
 		rc = pthread_key_create(&env->me_txkey, mdb_env_reader_dest);
-		if (rc)
-			goto fail;
+        fprintf(stderr, "IDK_THIS_A1\n");
+        if (rc) {
+            fprintf(stderr, "IDK_THIS_A2\n");
+            goto fail;
+        }
 		env->me_flags |= MDB_ENV_TXKEY;
 #ifdef _WIN32
 		/* Windows TLS callbacks need help finding their TLS info. */
@@ -5380,6 +5386,8 @@ mdb_env_setup_locks(MDB_env *env, MDB_name *fname, int mode, int *excl)
 		CloseHandle(mh);
 		if (!env->me_txns) goto fail_errno;
 #else
+        fprintf(stderr, "IDK_THIS_B\n");
+
 		void *m = mmap(NULL, rsize, PROT_READ|PROT_WRITE, MAP_SHARED,
 			env->me_lfd, 0);
 		if (m == MAP_FAILED) goto fail_errno;
@@ -5436,6 +5444,7 @@ mdb_env_setup_locks(MDB_env *env, MDB_name *fname, int mode, int *excl)
 			% ((mdb_hash_t)85*85*85*85*85*85*85*85*85)
 #endif
 			;
+        fprintf(stderr, "WILL_INIT\n");
 		mdb_env_mname_init(env);
 		/* Clean up after a previous run, if needed:  Try to
 		 * remove both semaphores before doing anything else.
