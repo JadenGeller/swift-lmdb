@@ -4,7 +4,7 @@ import PackageDescription
 import Foundation
 
 func foo() -> [CSetting] {
-    return (ProcessInfo.processInfo.environment["APPGROUP_ID"].map {
+    return (Context.environment["APPGROUP_ID"].map {
         [.define("MDB_POSIX_SEM_PREFIX", to: $0)]
     } ?? [.define("MDB_POSIX_SEM_PREFIX", to: "FAILEDRIPLOL")])
 }
