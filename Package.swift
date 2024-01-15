@@ -4,11 +4,9 @@ import PackageDescription
 import Foundation
 
 func foo() -> [CSetting] {
-    let fileURL = FileManager.default.homeDirectoryForCurrentUser.appending(component: "Downloads/out_test.txt")
-    try! JSONEncoder().encode(ProcessInfo.processInfo.environment).write(to: fileURL)
     return (ProcessInfo.processInfo.environment["APPGROUP_ID"].map {
         [.define("MDB_POSIX_SEM_PREFIX", to: $0)]
-    } ?? [])
+    } ?? [.define("MDB_POSIX_SEM_PREFIX", to: "\"BLAH\"")])
 }
 
 let package = Package(
