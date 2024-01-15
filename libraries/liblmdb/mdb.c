@@ -5391,10 +5391,14 @@ mdb_env_setup_locks(MDB_env *env, MDB_name *fname, int mode, int *excl)
 		void *m = mmap(NULL, rsize, PROT_READ|PROT_WRITE, MAP_SHARED,
 			env->me_lfd, 0);
 		if (m == MAP_FAILED) goto fail_errno;
+        fprintf(stderr, "IDK_THIS_B1\n");
+
 		env->me_txns = m;
 #endif
 	}
 	if (*excl > 0) {
+        fprintf(stderr, "BLAH_BLAH1\n");
+
 #ifdef _WIN32
 		BY_HANDLE_FILE_INFORMATION stbuf;
 		struct {
@@ -5432,8 +5436,14 @@ mdb_env_setup_locks(MDB_env *env, MDB_name *fname, int mode, int *excl)
 #if defined(__NetBSD__)
 #define	MDB_SHORT_SEMNAMES	1	/* limited to 14 chars */
 #endif
+        fprintf(stderr, "BLAH_BLAH2\n");
+
 		if (fstat(env->me_lfd, &stbuf)) goto fail_errno;
+        fprintf(stderr, "BLAH_BLAH3\n");
+
 		memset(&idbuf, 0, sizeof(idbuf));
+        fprintf(stderr, "BLAH_BLAH4\n");
+
 		idbuf.dev = stbuf.st_dev;
 		idbuf.ino = stbuf.st_ino;
 		env->me_txns->mti_mutexid = mdb_hash(&idbuf, sizeof(idbuf))
