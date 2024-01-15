@@ -16,9 +16,11 @@ let package = Package(
         .target(
             name: "CLMDB",
             dependencies: [],
-            cSettings: ProcessInfo.processInfo.environment["APPGROUP_ID"].map {
+            cSettings: [
+                .define("MDB_USE_POSIX_SEM")
+            ] + (ProcessInfo.processInfo.environment["APPGROUP_ID"].map {
                 [.define("MDB_POSIX_SEM_PREFIX", to: $0)]
-            } ?? []
+            } ?? [])
         )
     ]
 )
