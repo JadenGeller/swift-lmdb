@@ -5307,6 +5307,8 @@ mdb_env_mname_init(MDB_env *env)
 static int ESECT
 mdb_env_setup_locks(MDB_env *env, MDB_name *fname, int mode, int *excl)
 {
+    fprintf(stderr, "SETUP_LOCKS\n");
+
 #ifdef _WIN32
 #	define MDB_ERRCODE_ROFS	ERROR_WRITE_PROTECT
 #else
@@ -5513,6 +5515,8 @@ mdb_env_setup_locks(MDB_env *env, MDB_name *fname, int mode, int *excl)
 		env->me_wmutex = OpenMutexA(SYNCHRONIZE, FALSE, MUTEXNAME(env, 'w'));
 		if (!env->me_wmutex) goto fail_errno;
 #elif defined(MDB_USE_POSIX_SEM)
+        fprintf(stderr, "ALT_SETUP\n");
+
 		mdb_env_mname_init(env);
 		env->me_rmutex = sem_open(MUTEXNAME(env, 'r'), 0);
 		if (env->me_rmutex == SEM_FAILED) goto fail_errno;
